@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Báo Cáo Công Ty</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            padding: 10px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 1000px;
+            margin: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #004080;
+            text-align: center;
+            font-size: 22px;
+            border-bottom: 2px solid #004080;
+            padding-bottom: 6px;
+        }
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .column {
+            width: 48%;
+        }
+        .small-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #004080;
+            text-transform: uppercase;
+            margin: 15px 0 8px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .field {
+            margin: 6px 0;
+        }
+        .label {
+            font-weight: bold;
+            color: #004080;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            font-size: 13px;
+        }
+        th {
+            background-color: #004080;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #eaeaea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BÁO CÁO TỔNG QUAN MÃ CỔ PHIẾU - {{ company["Mã CK"] }}</h1>
+
+        <div class="two-columns">
+            <div class="column">
+                <div class="small-title">Thông tin chung</div>
+                <div class="field"><span class="label">Tên công ty:</span> {{ company["Company Name"] }}</div>
+                <div class="field"><span class="label">Mã chứng khoán:</span> {{ company["Mã CK"] }}</div>
+                <div class="field"><span class="label">Sàn niêm yết:</span> {{ company["Sàn niêm yết"] }}</div>
+                <div class="field"><span class="label">Năm thành lập:</span> {{ company["Năm thành lập"] }}</div>
+            </div>
+            <div class="column">
+                <div class="small-title">Thông tin doanh nghiệp</div>
+                <div class="field"><span class="label">Ngành ICB - Cấp 1:</span> {{ company["Ngành ICB - Cấp 1"] }}</div>
+                <div class="field"><span class="label">Ngành ICB - Cấp 2:</span> {{ company["Ngành ICB - Cấp 2"] }}</div>
+                <div class="field"><span class="label">Ngành ICB - Cấp 3:</span> {{ company["Ngành ICB - Cấp 3"] }}</div>
+                <div class="field"><span class="label">Trang web:</span> <a href="{{ company['Trang web'] }}">{{ company['Trang web'] }}</a></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="small-title">Tóm tắt công ty</div>
+            <p>{{ company["Tóm tắt công ty"] }}</p>
+        </div>
+        <div class="section">
+            <div class="small-title">Lịch sử phát triển</div>
+            {{ company["Lịch sử phát triển"] | safe }}
+        </div>
+        <div class="section">
+            <div class="small-title">Chiến lược kinh doanh</div>
+            {{ company["Chiến lược kinh doanh"] | safe }}
+        </div>
+
+        <div class="section">
+            <div class="small-title">📂 Dữ liệu tài chính</div>
+            {% for file, df in data.items() %}
+                <h4>{{ file }}</h4>
+                {{ df.head(5).to_html(index=False) | safe }}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

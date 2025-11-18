@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Báo Cáo Tài Chính</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+            margin: 0;
+        }
+        @page {
+            @bottom-center {
+                content: "Trang " counter(page) " / " counter(pages);
+                font-size: 12px;
+                color: #666;
+            }
+            margin: 2cm;
+        }
+
+
+        h1 {
+            color: #004080;
+            text-align: center;
+            font-size: 20px;
+            border-bottom: 2px solid #004080;
+            padding-bottom: 6px;
+        }
+        h2.section-title {
+            font-size: 18px;
+            color: #004080;
+            border-bottom: 2px solid #004080;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #004080;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+        .subsection-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: #004080;
+        }
+
+        /* Info table - căn trái */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+        }
+        .info-table th {
+            background-color: #004080;
+            color: white;
+            font-size: 14px;
+            text-align: left;
+            padding: 6px;
+        }
+        .info-table td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            font-size: 12px;
+            text-align: left;
+        }
+        .info-table tr:nth-child(even) {
+            background-color: #e0e0e0;
+        }
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+        }
+        .financial-table th {
+            background-color: #004080;
+            color: white;
+            font-size: 14px;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .financial-table td {
+            border: 1px solid #ccc;
+            font-size: 12px;
+            padding: 6px;
+            text-align: center;
+        }
+
+        /* Căn trái cho cột "Chỉ tiêu" */
+        .financial-table td.label-cell {
+            text-align: left;
+            font-weight: normal;
+        }
+        .financial-table tr.even {
+            background-color: #e0e0e0;
+        }
+        .bold-label {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .financial-table img {
+            display: block;
+            margin: 0 auto;
+        }
+        .summary h2 {
+            font-size: 14px;
+            background-color: #004080;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+
+        p, ul {
+            margin: 3px 0;
+            padding-left: 12px;
+            font-size: 12px;
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        .small-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #004080;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .column {
+            width: 48%;
+        }
+
+        .note {
+            font-style: italic;
+            color: #333;
+            margin-top: 6px;
+        }
+
+        .toc {
+            background: #004080;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .toc a {
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+            padding: 4px 0;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .page-break {
+        page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BÁO CÁO DOANH NGHIỆP - {{ company["Mã CK"] }}</h1>
+        <p style="font-size: 12px; font-style: italic; text-align: center; margin-top: -5px;">
+            Ngày xuất PDF: {{ today }}<br/>
+            Lê Thị Hường – K224141724
+        </p>
+        <!-- 1. Giới thiệu Doanh Nghiệp -->
+        <div class="two-columns">
+            <div class="column">
+                <table class="info-table">
+                    <tr><th colspan="2">THÔNG TIN CHUNG</th></tr>
+                    <tr><td><strong>Tên công ty</strong></td><td>{{ company.get("Company Name", "N/A") }}</td></tr>
+                    <tr><td><strong>Mã chứng khoán</strong></td><td>{{ company.get("Mã CK", "N/A") }}</td></tr>
+                    <tr><td><strong>Sàn niêm yết</strong></td><td>{{ company.get("Sàn niêm yết", "N/A") }}</td></tr>
+                    <tr><td><strong>Năm thành lập</strong></td><td>{{ company.get("Năm thành lập", "N/A") }}</td></tr>
+                </table>
+            </div>
+            <div class="column">
+                <table class="info-table">
+                    <tr><th colspan="2">THÔNG TIN DOANH NGHIỆP</th></tr>
+                    <tr><td><strong>Ngành ICB - Cấp 1</strong></td><td>{{ company.get("Ngành ICB - Cấp 1", "N/A") }}</td></tr>
+                    <tr><td><strong>Ngành ICB - Cấp 2</strong></td><td>{{ company.get("Ngành ICB - Cấp 2", "N/A") }}</td></tr>
+                    <tr><td><strong>Ngành ICB - Cấp 3</strong></td><td>{{ company.get("Ngành ICB - Cấp 3", "N/A") }}</td></tr>
+                    <tr><td><strong>Trang web</strong></td>
+                        <td><a href="{{ company.get('Trang web', '#') }}" style="color: blue;">{{ company.get("Trang web", "N/A") }}</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="summary">
+            <h2 class="small-title">Tóm tắt công ty</h2>
+            <p>{{ company.get("Tóm tắt công ty", "Không có thông tin.") }}</p>
+        </div>
+
+        <div class="summary">
+            <h2 class="small-title">Lịch sử phát triển</h2>
+            {{ company.get("Lịch sử phát triển", "<p>Không có thông tin.</p>") }}
+        </div>
+
+        <div class="summary">
+            <h2 class="small-title">Chiến lược kinh doanh</h2>
+            {{ company.get("Chiến lược kinh doanh", "<p>Không có thông tin.</p>") }}
+        </div>
+
+        <!-- 2. Phân tích tài chính -->
+        <div id="section-2" class="page-break">
+            <h2 class="section-title">1. Phân tích cơ bản (FA)<h2>
+        <h2 class="subsection-title"> 1.1 Báo cáo tài chính</h2>
+        <h3>Bảng cân đối kế toán</h3>
+        <p class="note">Đơn vị: Tỷ VNĐ</p>
+        {{ balance_sheet | safe }}
+        {{ balance_sheet_chart | safe }}
+
+        <h3>Kết quả kinh doanh</h3>
+        <p class="note">Đơn vị: Tỷ VNĐ</p>
+        {{ income_statement | safe }}
+        {{income_profitability_chart | safe }}
+        <h3>Lưu chuyển tiền tệ</h3>
+        <p class="note">Đơn vị: Tỷ VNĐ</p>
+        {{ cashflow_statement | safe }}
+        {{ cashflow_bar_chart | safe }}
+        <h2 class="subsection-title">1.2 Chỉ số tài chính</h2>
+        {{ financial_ratios_table | safe }}
+        <h2 class="subsection-title">1.3 So sánh với Trung bình ngành</h2>
+        {{ industry_comparison_table | safe }}
+        <div id="section-3" class="page-break">
+            <h2 class="section-title">2. Phân tích kỹ thuật (TA)</h2>
+        <p>{{ technical_analysis }}</p>
+        <div id="section-4" class="page-break">
+            <h2 class="section-title">3. Phân tích ngành & vị thế</h2>
+        <p>{{ industry_analysis }}</p>
+        {{ pie_html | safe }}
+        {{ valuation_analysis | safe }}
+        <div id="section-5" class="page-break">
+            <h2 class="section-title">4. Phân tích giao dịch nhà đầu tư theo ngành</h2>
+        {% if investor_trade_analysis %}
+          <div class="section">
+            {{ investor_trade_analysis | safe }}
+          </div>
+        {% endif %}
+        <!-- 6. Kết luận -->
+        <div id="section-6" class="page-break">
+            <h2 class="section-title">5. Kết luận</h2>
+        <div class="summary">
+        {{ conclusion | safe }}
+    </div>
+</div>
+
+        <!-- Mục Lục ở Cuối -->
+        <div class="toc">
+            <b>MỤC LỤC</b>
+            <a href="#section-2">1. Phân tích tài chính (FA)</a>
+            <a href="#section-3">2. Phân tích kỹ thuật (TA)</a>
+            <a href="#section-4">3. Phân tích ngành & vị thế</a>
+            <a href="#section-5">4. Phân tích giao dịch nhà đầu tư</a>
+            <a href="#section-6">5. Kết luận</a>
+        </div>
+    </div>
+</body>
+</html>
